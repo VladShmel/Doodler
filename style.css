@@ -1,20 +1,44 @@
+.container{
+    width: 440px;
+    padding: 10px;
+    border: 3px solid black;
+}
+.header{
+    width: 400px;
+    display: flex;
+    align-items: center;
+    
+    justify-content: space-between;
+}
+.Logo{
+    color: green;
+}
+.ScoreDisplay{
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
 .grid{
+    overflow: hidden;
     width: 400px;
     height: 600px;
     background-color: antiquewhite;
     position: relative;
-    font-size: 200px;
+    font-size: 35px;
     text-align: center;
-    
+    justify-content: center;
+    margin: auto;
 }
 .doodler{
     width: 60px;
     height: 85px;
+    border-radius: 20px 20px 0 0;
     background-color: greenyellow;
     position: absolute;
 
 }
 .platform{
+    border-radius: 7px;
     width: 85px;
     height: 15px;
     background-color: green;

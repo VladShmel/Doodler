@@ -1,6 +1,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const grid = document.querySelector('.grid')
+    const drawScoreHere = document.querySelector('.score')
     const doodler = document.createElement('div')
     let doodlerLeftSpace = 50
     let startPoint = 150
@@ -51,8 +52,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function movePlatforms() {
         if (doodlerBottomSpace > 200) {
+            
             platforms.forEach(platform => {
-                platform.bottom -= 4
+               /*  if (doodlerBottomSpace > 200 && doodlerBottomSpace < 400){
+                    platform.bottom -= 10
+                } else if (doodlerBottomSpace > 400 && doodlerBottomSpace < 540){
+                    platform.bottom -= 20
+                   
+                } else if (doodlerBottomSpace > 540){
+                    platform.bottom -= 40
+                
+                } */
+                platform.bottom -= 6
                 let visual = platform.visual
                 visual.style.bottom = platform.bottom + 'px'
             
@@ -61,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 firstPlatform.classList.remove('platform')
                 platforms.shift()
                 score++
+                drawScoreHere.innerHTML = score
                 let newPlatform = new Platform(600)
                 platforms.push(newPlatform)
             }
@@ -72,19 +84,19 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(downTimerId)
         isJumping = true
         upTimerId = setInterval(function () {
-            doodlerBottomSpace += 20
+            doodlerBottomSpace += 15
             doodler.style.bottom = doodlerBottomSpace + 'px'
             if (doodlerBottomSpace > startPoint + 200) {
                 fall()
             }
-        }, 30)
+        }, 35)
     }
 
     function fall() {
         clearInterval(upTimerId)
         isJumping = false
         downTimerId = setInterval(function () {
-            doodlerBottomSpace -= 5
+            doodlerBottomSpace -= 10
             doodler.style.bottom = doodlerBottomSpace + 'px'
             if (doodlerBottomSpace <= 0) {
                 gameOver()
@@ -111,7 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
         while (grid.firstChild){
             grid.removeChild(grid.firstChild)
         }
-        grid.innerHTML = score
+        grid.innerHTML = "Game over"
+        
         clearInterval(upTimerId)
         clearInterval(downTimerId)
         clearInterval(leftTimerId)
@@ -133,14 +146,22 @@ document.addEventListener('DOMContentLoaded', () => {
             clearInterval(rightTimerId)
             isGoingRight = false
         }
+        if (isGoingLeft){
+            clearInterval(leftTimerId)
+            isGoingLeft = false
+        }
         isGoingLeft = true
         leftTimerId = setInterval(function () {
-            if (doodlerLeftSpace >= 0 ) {
+            if (doodlerLeftSpace >= -20 ) {
                 doodlerLeftSpace -=5 
                 doodler.style.left = doodlerLeftSpace + 'px'
-            } else moveRight() // We need a teleport here
+            } else {
+                doodlerLeftSpace = 400
+                doodlerLeftSpace -=5 
+                doodler.style.left = doodlerLeftSpace + 'px'
+            }// or moveRight() // Now we have a teleport here
             
-        },30)
+        },20)
     }
 
     function moveRight(){
@@ -148,13 +169,21 @@ document.addEventListener('DOMContentLoaded', () => {
             clearInterval(leftTimerId)
             isGoingLeft = false
         }
+        if (isGoingRight){
+            clearInterval(rightTimerId)
+            isGoingRight = false
+        }
         isGoingRight = true
         rightTimerId = setInterval(function(){
             if (doodlerLeftSpace <= 340){
                 doodlerLeftSpace += 5
                 doodler.style.left = doodlerLeftSpace + 'px'
-            } else moveLeft()// We need a teleport here
-        },30)
+            } else {
+                doodlerLeftSpace = -20
+                doodlerLeftSpace +=5 
+                doodler.style.left = doodlerLeftSpace + 'px'
+            }// ormoveLeft()// We need a teleport here
+        },20)
     }
 
 function moveStraight(){
